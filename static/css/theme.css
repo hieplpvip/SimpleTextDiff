@@ -1,0 +1,32 @@
+body {
+  background: #eee;
+  text-align: center;
+}
+
+.container {
+  height: 150px;
+}
+
+.inputText {
+  font-family: monospace;
+  font-size: 12px;
+  height: calc(100vh - 190px);
+  width: 49%;
+  resize: none;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+#diffButton, #swapButton, #clearButton {
+  margin: 10px;
+}
+
+footer {
+  height: 30px;
+}
+
+#hotkeys_icon {
+	margin-left: 20px;
+	float: left;
+}
