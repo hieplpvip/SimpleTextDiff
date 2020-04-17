@@ -47,6 +47,8 @@ $(document).ready(function() {
 
   $('#diffButton').click(function() {
     renderDiff(true);
+    // Scroll to top
+    $(window).scrollTop(0);
   });
 
   $(document).bind('keydown', 'Alt+Ctrl+D', function() {$('#diffButton').click(); return false; });
