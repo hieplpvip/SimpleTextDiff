@@ -22,6 +22,12 @@ body {
   margin: 10px;
 }
 
+#copyButton {
+  padding: 1px 6px;
+  position: absolute;
+  right: 10px;
+}
+
 footer {
   height: 30px;
 }

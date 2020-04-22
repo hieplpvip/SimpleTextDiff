@@ -1,4 +1,15 @@
 var diffRendered = false;
+var patch = '';
+
+function copyToClipboard(text) {
+  var listener = function(ev) {
+    ev.clipboardData.setData("text/plain", text);
+    ev.preventDefault();
+  };
+  document.addEventListener("copy", listener);
+  document.execCommand("copy");
+  document.removeEventListener("copy", listener);
+}
 
 function renderDiff(alertIfIdentical) {
   var text1 = $('#inputText1').val();
@@ -10,7 +21,7 @@ function renderDiff(alertIfIdentical) {
     $('#diffResult').html('');
     diffRendered = false;
   } else {
-    var patch = Diff.createPatch('Diff Result', text1, text2);
+    patch = Diff.createTwoFilesPatch('Text 1', 'Text 2', text1, text2);
     var diffHtml = Diff2Html.html(patch, {
       drawFileList: false,
       outputFormat: $('#diff-options-output-format :selected').val(),
@@ -19,6 +30,29 @@ function renderDiff(alertIfIdentical) {
       matchingMaxComparisons: $('#diff-options-matching-max-comparisons').val()
     });
     $('#diffResult').html(diffHtml);
+
+    // Change header
+    $('.d2h-file-name:first').text('Diff Result');
+    $('.d2h-tag:first').attr('class', 'd2h-tag d2h-changed d2h-changed-tag');
+    $('.d2h-tag:first').text('CHANGED');
+
+    // Add copy button
+    $('.d2h-file-name-wrapper:first').append(`
+      <button class="btn btn-light" id="copyButton" data-toggle="tooltip" data-placement="bottom" title="Copied!">
+        <img src="/static/img/clippy.svg" height="16" width="12" alt="Copy to clipboard">
+      </button>
+    `);
+    $('#copyButton').tooltip({
+      trigger: 'click'
+    });
+    $('#copyButton').click(function() {
+      copyToClipboard(patch);
+      $('#copyButton').blur();
+    });
+    $('#copyButton').mouseleave(function() {
+      $('#copyButton').tooltip('hide');
+    });
+
     diffRendered = true;
   }
 }
@@ -47,6 +81,7 @@ $(document).ready(function() {
 
   $('#diffButton').click(function() {
     renderDiff(true);
+
     // Scroll to top
     $(window).scrollTop(0);
   });
