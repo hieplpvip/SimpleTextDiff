@@ -18,7 +18,9 @@ body {
   border-radius: 5px;
 }
 
-#diffButton, #swapButton, #clearButton {
+#diffButton,
+#swapButton,
+#clearButton {
   margin: 10px;
 }
 
@@ -33,6 +35,6 @@ footer {
 }
 
 #hotkeys_icon {
-	margin-left: 20px;
-	float: left;
+  margin-left: 20px;
+  float: left;
 }

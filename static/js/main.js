@@ -2,13 +2,13 @@ var diffRendered = false;
 var patch = '';
 
 function copyToClipboard(text) {
-  var listener = function(ev) {
-    ev.clipboardData.setData("text/plain", text);
+  var listener = function (ev) {
+    ev.clipboardData.setData('text/plain', text);
     ev.preventDefault();
   };
-  document.addEventListener("copy", listener);
-  document.execCommand("copy");
-  document.removeEventListener("copy", listener);
+  document.addEventListener('copy', listener);
+  document.execCommand('copy');
+  document.removeEventListener('copy', listener);
 }
 
 function renderDiff(alertIfIdentical) {
@@ -22,14 +22,17 @@ function renderDiff(alertIfIdentical) {
     diffRendered = false;
   } else {
     patch = Diff.createTwoFilesPatch('Text 1', 'Text 2', text1, text2);
-    var diffHtml = Diff2Html.html(patch, {
+    var targetElement = document.getElementById('diffResult');
+    var diff2htmlUi = new Diff2HtmlUI(targetElement, patch, {
       drawFileList: false,
       outputFormat: $('#diff-options-output-format :selected').val(),
       matching: $('#diff-options-matching :selected').val(),
       matchWordsThreshold: $('#diff-options-match-words-threshold').val(),
-      matchingMaxComparisons: $('#diff-options-matching-max-comparisons').val()
+      matchingMaxComparisons: $('#diff-options-matching-max-comparisons').val(),
+      fileContentToggle: false
     });
-    $('#diffResult').html(diffHtml);
+    diff2htmlUi.draw();
+    diff2htmlUi.highlightCode();
 
     // Change header
     $('.d2h-file-name:first').text('Diff Result');
@@ -45,11 +48,11 @@ function renderDiff(alertIfIdentical) {
     $('#copyButton').tooltip({
       trigger: 'click'
     });
-    $('#copyButton').click(function() {
+    $('#copyButton').click(function () {
       copyToClipboard(patch);
       $('#copyButton').blur();
     });
-    $('#copyButton').mouseleave(function() {
+    $('#copyButton').mouseleave(function () {
       $('#copyButton').tooltip('hide');
     });
 
@@ -57,15 +60,15 @@ function renderDiff(alertIfIdentical) {
   }
 }
 
-$(document).ready(function() {
-  $('#clearButton').click(function() {
+$(document).ready(function () {
+  $('#clearButton').click(function () {
     $('#inputText1').val('');
     $('#inputText2').val('');
     $('#diffResult').html('');
     diffRendered = false;
   });
 
-  $('#swapButton').click(function() {
+  $('#swapButton').click(function () {
     var text1 = $('#inputText1').val();
     var text2 = $('#inputText2').val();
     $('#inputText1').val(text2);
@@ -75,21 +78,39 @@ $(document).ready(function() {
     }
   });
 
-  $('.options').change(function() {
+  $('.options').change(function () {
     renderDiff(false);
   });
 
-  $('#diffButton').click(function() {
+  $('#diffButton').click(function () {
     renderDiff(true);
 
     // Scroll to top
     $(window).scrollTop(0);
   });
 
-  $(document).bind('keydown', 'Alt+Ctrl+D', function() {$('#diffButton').click(); return false; });
-  $(document).bind('keydown', 'Alt+Ctrl+C', function() {$('#clearButton').click(); return false; });
-  $(document).bind('keydown', 'Alt+Ctrl+S', function() {$('#swapButton').click(); return false; });
-  $('.inputText').bind('keydown', 'Alt+Ctrl+D', function() {$('#diffButton').click(); return false; });
-  $('.inputText').bind('keydown', 'Alt+Ctrl+C', function() {$('#clearButton').click(); return false; });
-  $('.inputText').bind('keydown', 'Alt+Ctrl+S', function() {$('#swapButton').click(); return false; });
+  $(document).bind('keydown', 'Alt+Ctrl+D', function () {
+    $('#diffButton').click();
+    return false;
+  });
+  $(document).bind('keydown', 'Alt+Ctrl+C', function () {
+    $('#clearButton').click();
+    return false;
+  });
+  $(document).bind('keydown', 'Alt+Ctrl+S', function () {
+    $('#swapButton').click();
+    return false;
+  });
+  $('.inputText').bind('keydown', 'Alt+Ctrl+D', function () {
+    $('#diffButton').click();
+    return false;
+  });
+  $('.inputText').bind('keydown', 'Alt+Ctrl+C', function () {
+    $('#clearButton').click();
+    return false;
+  });
+  $('.inputText').bind('keydown', 'Alt+Ctrl+S', function () {
+    $('#swapButton').click();
+    return false;
+  });
 });
