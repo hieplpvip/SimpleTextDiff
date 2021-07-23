@@ -12,7 +12,7 @@ const urlsToCache = [
   './static/js/jquery.hotkeys.js',
   './static/js/bootstrap.bundle.min.js',
   './static/js/diff.min.js',
-  './static/js/diff2html.min.js',
+  './static/js/diff2html-ui.min.js',
   './static/js/main.js'
 ];
 
