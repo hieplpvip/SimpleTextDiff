@@ -42,7 +42,7 @@ function renderDiff(alertIfIdentical) {
     // Add copy button
     $('.d2h-file-name-wrapper:first').append(`
       <button class="btn btn-light" id="copyButton" data-toggle="tooltip" data-placement="bottom" title="Copied!">
-        <img src="/static/img/clippy.svg" height="16" width="12" alt="Copy to clipboard">
+        <img src="static/img/clippy.svg" height="16" width="12" alt="Copy to clipboard">
       </button>
     `);
     $('#copyButton').tooltip({
